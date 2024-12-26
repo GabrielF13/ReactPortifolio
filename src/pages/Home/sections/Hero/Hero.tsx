@@ -4,7 +4,6 @@ import Avatar from "../../../../assets/images/avatar.jpg"
 import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 import StyledButton from "../../../../components/StyledButton/StyledButton";
-import theme from "../../../../theme";
 import { AnimatedBackground } from "../../../../components/AnimatedBackground/AnimatedBackground";
 
 
@@ -15,6 +14,12 @@ const Hero = () => {
         height: "100vh",
         display: "flex",
         alignItems: "center",
+        [theme.breakpoints.up("xs")]: { // Mobile
+          paddingTop: "0",
+        },
+        [theme.breakpoints.up("md")]: { // Desktop
+          paddingTop: "100px",
+        }
 
     }))
 
@@ -49,12 +54,12 @@ const Hero = () => {
                 <Typography color="secondary" variant="h2" textAlign={"center"}>Sou Desenvolvedor Back-End</Typography>
                 <Grid container display={"flex"} justifyContent={"center"} spacing={3} pt={3}>
                   <Grid size={{ xs: 12, md: 4 }} display={"flex"} justifyContent={"center"}>
-                    <StyledButton>
+                    <StyledButton onClick={() => console.log("oi")}>
                       <DownloadIcon/><Typography> Download CV </Typography>
                     </StyledButton>
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }} display={"flex"} justifyContent={"center"}>
-                    <StyledButton>
+                    <StyledButton onClick={() => console.log("oi")}>
                        <EmailIcon/><Typography> Fale Comigo </Typography>
                     </StyledButton>
                   </Grid>
