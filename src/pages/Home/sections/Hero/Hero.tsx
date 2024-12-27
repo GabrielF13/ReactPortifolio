@@ -27,6 +27,9 @@ const Hero = () => {
       width: "80%",
       borderRadius: "50%",
       border: `1px solid ${theme.palette.primary.contrastText}`, 
+      [theme.breakpoints.up("xs")]: { // Mobile
+        marginTop: "30%",
+      },
     }))
 
     return (
