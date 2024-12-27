@@ -1,6 +1,7 @@
 import { Box, Container, styled, Typography } from "@mui/material"
 import Grid from '@mui/material/Grid2';
 import Avatar from "../../../../assets/images/avatar.jpg"
+import CvFile from "../../../../assets/Attachment/Curriculo Gabriel Ferreira.pdf.pdf"
 import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 import StyledButton from "../../../../components/StyledButton/StyledButton";
@@ -48,13 +49,22 @@ const Hero = () => {
               <Typography color="secondary" variant="h2" textAlign={"center"}>Sou Desenvolvedor Back-End</Typography>
               <Grid container display={"flex"} justifyContent={"center"} spacing={3} pt={3}>
                 <Grid size={{ xs: 12, md: 4 }} display={"flex"} justifyContent={"center"}>
-                  <StyledButton onClick={() => console.log("oi")}>
-                    <DownloadIcon /><Typography> Download CV </Typography>
+                  <StyledButton
+                    href={CvFile}
+                    download="Gabriel_CV.pdf"
+                    as="a"
+                  >
+                    <DownloadIcon />
+                    <Typography>Download CV</Typography>
                   </StyledButton>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }} display={"flex"} justifyContent={"center"}>
-                  <StyledButton onClick={() => console.log("oi")}>
-                    <EmailIcon /><Typography> Fale Comigo </Typography>
+                  <StyledButton
+                    href="mailto:gabrielferreiracunha@gmail.com?subject=Contato&body=Olá Gabriel, gostaria de falar sobre..."
+                    as="a"
+                  >
+                    <EmailIcon />
+                    <Typography>Fale Comigo</Typography>
                   </StyledButton>
                 </Grid>
               </Grid>

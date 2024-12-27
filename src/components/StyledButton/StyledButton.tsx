@@ -4,35 +4,43 @@ import { ReactNode } from "react"
 
 interface StyledButtonProps {
   children: ReactNode
-  onClick: () => void
+  href?: string;
+  download?: string;
+  as?: 'a' | 'button';
 }
-const StyledButton: React.FC<StyledButtonProps> = ({children, onClick}) => {
 
+const StyledButton: React.FC<StyledButtonProps> = ({
+  children,
+  href,
+  download,
+  as = "button", // Define o elemento padrão como 'button'.
+}) => {
+  const StyledButton = styled(as)(({ theme }) => ({
+    backgroundColor: "transparent",
+    border: `1px solid ${theme.palette.primary.contrastText}`,
+    borderRadius: "3px",
+    padding: "5px 15px",
+    width: "100%",
+    color: theme.palette.primary.contrastText,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px",
+    textDecoration: "none", // Para remover sublinhado ao usar links.
+    cursor: "pointer", // Para garantir a aparência de botão.
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  }));
 
-    const StyledButton = styled("button")(({theme}) => ({
-      backgroundColor: "transparent",
-      border: `1px solid ${theme.palette.primary.contrastText}`,
-      borderRadius: "3px",
-      padding: "5px 15px",
-      width: "100%",
-      color: theme.palette.primary.contrastText,
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-      '&:hover': {
-        backgroundColor: theme.palette.secondary.main,
-    }
-    }))
+  return (
+    <StyledButton
+      href={href} // Apenas será usado se for 'a'.
+      download={download} // Apenas será usado se for 'a'.
+    >
+      {children}
+    </StyledButton>
+  );
+};
 
-    return (
-      <>
-        <StyledButton onClick={onClick}>
-          {children}
-          </StyledButton>
-      </>
-    )
-  }
-  
-  export default StyledButton
-  
+export default StyledButton
