@@ -28,8 +28,11 @@ const Hero = () => {
       borderRadius: "50%",
       border: `1px solid ${theme.palette.primary.contrastText}`, 
       [theme.breakpoints.up("xs")]: { // Mobile
-        marginTop: "30%",
+        marginTop: "40%",
       },
+        [theme.breakpoints.up("md")]: { // Desktop
+          marginTop: "0",
+        }
     }))
 
     return (
