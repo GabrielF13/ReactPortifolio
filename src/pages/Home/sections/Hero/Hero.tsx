@@ -11,7 +11,7 @@ const Hero = () => {
 
     const StyleHero = styled("div")(({theme}) => ({
         backgroundColor: theme.palette.primary.main,
-        height: "100vh",
+        height: "100dvh",
         display: "flex",
         alignItems: "center",
         [theme.breakpoints.up("xs")]: { // Mobile
