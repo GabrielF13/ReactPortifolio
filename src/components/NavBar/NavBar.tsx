@@ -1,4 +1,5 @@
 import { Box, MenuItem, styled } from "@mui/material"
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
 
@@ -15,9 +16,9 @@ const NavBar = () => {
 
   return (
     <StyleToolbar>
-      <MenuItem>Sobre</MenuItem>
-      <MenuItem>Tecnologias</MenuItem>
-      <MenuItem>Projetos</MenuItem>
+      <MenuItem component={Link} to="/">Inicio</MenuItem>
+      <MenuItem component={Link} to="/about">Sobre</MenuItem>
+      <MenuItem component={Link} to="/projects">Projetos</MenuItem>
     </StyleToolbar>
   )
 }

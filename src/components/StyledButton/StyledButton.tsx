@@ -5,6 +5,7 @@ import { ReactNode } from "react"
 interface StyledButtonProps {
   children: ReactNode
   href?: string;
+  target?: string;
   download?: string;
   as?: 'a' | 'button';
 }
@@ -13,7 +14,8 @@ const StyledButton: React.FC<StyledButtonProps> = ({
   children,
   href,
   download,
-  as = "button", // Define o elemento padrão como 'button'.
+  target,
+  as = "button",
 }) => {
   const StyledButton = styled(as)(({ theme }) => ({
     backgroundColor: "transparent",
@@ -26,8 +28,8 @@ const StyledButton: React.FC<StyledButtonProps> = ({
     alignItems: "center",
     justifyContent: "center",
     gap: "10px",
-    textDecoration: "none", // Para remover sublinhado ao usar links.
-    cursor: "pointer", // Para garantir a aparência de botão.
+    textDecoration: "none",
+    cursor: "pointer",
     "&:hover": {
       backgroundColor: theme.palette.secondary.main,
     },
@@ -36,7 +38,8 @@ const StyledButton: React.FC<StyledButtonProps> = ({
   return (
     <StyledButton
       href={href} // Apenas será usado se for 'a'.
-      download={download} // Apenas será usado se for 'a'.
+      download={download}
+      target={target} // Apenas será usado se for 'a'.
     >
       {children}
     </StyledButton>
