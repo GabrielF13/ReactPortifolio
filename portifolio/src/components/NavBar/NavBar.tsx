@@ -8,6 +8,12 @@ const NavBar = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Limpar activeSection quando não estiver na home
+    if (location.pathname !== '/') {
+      setActiveSection("");
+      return;
+    }
+
     const handleScroll = () => {
       const sections = ["hero", "about", "education", "experience", "projects"];
       const scrollPosition = window.scrollY + 100;
@@ -26,7 +32,7 @@ const NavBar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
