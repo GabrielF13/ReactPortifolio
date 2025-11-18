@@ -1,0 +1,56 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main  # ou master, dependendo do nome da sua branch principal
+  workflow_dispatch:  # Permite executar manualmente
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🚚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: portifolio/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ./portifolio
+        run: npm ci
+
+      - name: 🔨 Build project
+        working-directory: ./portifolio
+        run: npm run build
+
+      - name: 📂 List build files (debug)
+        working-directory: ./portifolio
+        run: |
+          echo "Build directory contents:"
+          ls -la dist/
+
+      - name: 🚀 Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./portifolio/dist/
+          server-dir: ./public_html/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.vscode/**
+            **/.idea/**
+
+      - name: ✅ Deployment completed
+        run: echo "🎉 Deployment to Hostinger completed successfully!"
+
