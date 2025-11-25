@@ -1,10 +1,10 @@
-name: Deploy to Hostinger
+name: Build and Deploy to Production Branch
 
 on:
   push:
     branches:
-      - main  # ou master, dependendo do nome da sua branch principal
-  workflow_dispatch:  # Permite executar manualmente
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: 🚚 Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -29,28 +31,52 @@ jobs:
         working-directory: ./portifolio
         run: npm run build
 
-      - name: 📂 List build files (debug)
+      - name: 📂 Verify build
         working-directory: ./portifolio
         run: |
           echo "Build directory contents:"
           ls -la dist/
+          echo "Build completed successfully!"
 
-      - name: 🚀 Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./portifolio/dist/
-          server-dir: ./public_html/
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/.vscode/**
-            **/.idea/**
+      - name: 📄 Create .htaccess
+        working-directory: ./portifolio/dist
+        run: |
+          cat > .htaccess << 'EOF'
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteCond %{REQUEST_FILENAME} !-l
+            RewriteRule . /index.html [L]
+          </IfModule>
+          EOF
+
+      - name: 🚀 Deploy to production branch
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Checkout production branch
+          git checkout production || git checkout --orphan production
+          
+          # Remove all files except .git
+          git rm -rf . 2>/dev/null || true
+          
+          # Copy build files
+          cp -r portifolio/dist/* .
+          
+          # Create deploy info
+          echo "Deploy realizado em: $(date)" > DEPLOY_INFO.txt
+          echo "Commit: ${{ github.sha }}" >> DEPLOY_INFO.txt
+          echo "Branch de origem: main" >> DEPLOY_INFO.txt
+          
+          # Commit and push
+          git add -A
+          git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push -f origin production
 
       - name: ✅ Deployment completed
-        run: echo "🎉 Deployment to Hostinger completed successfully!"
+        run: echo "🎉 Production branch updated! Webhook will trigger Hostinger deploy."
 
