@@ -1,3 +1,2 @@
-﻿Deploy realizado em: 2025-11-24 22:01:25
-Menu hamburguer mobile implementado
-Build corrigido e funcionando
+﻿Deploy realizado em: 2025-11-24 22:28:13
+CORRIGIDO: index.html agora na raiz
