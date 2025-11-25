@@ -149,8 +149,11 @@ const Projects = () => {
         padding: "20px",
     }));
 
-    const ProjectContent = styled(Box)(() => ({
+    const ProjectContent = styled(Box)(({ theme }) => ({
         padding: "24px",
+        [theme.breakpoints.down('sm')]: {
+            padding: "16px",
+        },
     }));
 
     const ProjectTitle = styled(Typography)(({ theme }) => ({
@@ -166,6 +169,11 @@ const Projects = () => {
         marginBottom: "16px",
         lineHeight: "1.6",
         opacity: 0.85,
+        [theme.breakpoints.down('sm')]: {
+            fontSize: "0.85rem",
+            marginBottom: "12px",
+            lineHeight: "1.5",
+        },
     }));
 
     const TechTag = styled(Box)(({ theme }) => ({
@@ -178,6 +186,12 @@ const Projects = () => {
         fontWeight: "600",
         marginRight: "8px",
         marginBottom: "8px",
+        [theme.breakpoints.down('sm')]: {
+            padding: "3px 8px",
+            fontSize: "0.65rem",
+            marginRight: "6px",
+            marginBottom: "6px",
+        },
     }));
 
     const ButtonStyle = styled("a")(({ theme }) => ({
@@ -224,7 +238,12 @@ const Projects = () => {
                 fontSize: "1.2rem",
                 marginTop: "-2px",
                 flexShrink: 0,
-            }
+            },
+            [theme.breakpoints.down('sm')]: {
+                fontSize: "0.8rem",
+                marginBottom: "6px",
+                gap: "6px",
+            },
         }
     }));
 
@@ -237,6 +256,28 @@ const Projects = () => {
         marginTop: "8px",
         textTransform: "uppercase",
         letterSpacing: "0.5px",
+    }));
+
+    const TechTagsContainer = styled(Box)(({ theme }) => ({
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "0px",
+        [theme.breakpoints.down('sm')]: {
+            flexWrap: "nowrap",
+            overflowX: "auto",
+            paddingBottom: "8px",
+            "&::-webkit-scrollbar": {
+                height: "4px",
+            },
+            "&::-webkit-scrollbar-track": {
+                background: theme.palette.primary.main,
+                borderRadius: "4px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+                background: theme.palette.secondary.main,
+                borderRadius: "4px",
+            },
+        },
     }));
 
     return (
@@ -303,13 +344,13 @@ const Projects = () => {
                                             {project.description}
                                         </ProjectDescription>
                                         
-                                        <Box sx={{ marginBottom: 2 }}>
+                                        <TechTagsContainer sx={{ marginBottom: 2 }}>
                                             {project.tags.map((tag, tagIndex) => (
                                                 <TechTag key={tagIndex}>
                                                     {tag}
                                                 </TechTag>
                                             ))}
-                                        </Box>
+                                        </TechTagsContainer>
 
                                         <SectionTitle>Principais Funcionalidades</SectionTitle>
                                         <FeaturesList>
