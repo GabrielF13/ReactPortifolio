@@ -1,2 +1,3 @@
-﻿Deploy realizado em: 2025-11-24 22:28:13
-CORRIGIDO: index.html agora na raiz
+﻿Deploy realizado em: 2025-11-24 22:32:25
+CORRIGIDO: index.html na raiz
+Versao: 1.0.1
