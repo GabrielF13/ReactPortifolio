@@ -1,10 +1,31 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+  
+  # Não redirecionar arquivos que existem (JS, CSS, imagens, etc)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
+  
+  # Não redirecionar arquivos da pasta assets
+  RewriteCond %{REQUEST_URI} !^/assets/
+  
+  # Redirecionar tudo para index.html (para rotas do React)
   RewriteRule . /index.html [L]
+</IfModule>
+
+# Configurar MIME types corretos
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType text/css .css
+  AddType image/jpeg .jpg .jpeg
+  AddType image/png .png
+  AddType image/svg+xml .svg
+  AddType application/pdf .pdf
+</IfModule>
+
+# Habilitar compressão
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
 </IfModule>
 
