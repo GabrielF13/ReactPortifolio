@@ -1,9 +1,18 @@
-import { Box, styled } from "@mui/material"
+import { Box, styled, Drawer, IconButton } from "@mui/material"
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
+import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import CodeIcon from '@mui/icons-material/Code';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const NavBar = () => {
   const [activeSection, setActiveSection] = useState("hero");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,6 +61,7 @@ const NavBar = () => {
         scrollToSection(item.id);
       }
     }
+    setMobileMenuOpen(false); // Fecha o menu após clicar
   };
 
   const StyleToolbar = styled(Box)(({ theme }) => ({
@@ -68,10 +78,9 @@ const NavBar = () => {
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
     boxSizing: "border-box",
     padding: "0 20px",
-    [theme.breakpoints.down('sm')]: {
-      height: "60px",
-      gap: "5px",
-      padding: "0 10px",
+    [theme.breakpoints.down('md')]: {
+      justifyContent: "space-between",
+      padding: "0 20px",
     },
   }))
 
@@ -105,19 +114,72 @@ const NavBar = () => {
     "&:hover::after": {
       width: "80%",
     },
-    [theme.breakpoints.down('sm')]: {
-      padding: "8px 12px",
-      fontSize: "0.85rem",
+    [theme.breakpoints.down('md')]: {
+      display: "none",
+    },
+  }))
+
+  const MobileMenuButton = styled(IconButton)(({ theme }) => ({
+    display: "none",
+    color: "white",
+    [theme.breakpoints.down('md')]: {
+      display: "block",
+    },
+  }))
+
+  const Logo = styled(Box)(({ theme }) => ({
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    color: theme.palette.secondary.main,
+    display: "none",
+    [theme.breakpoints.down('md')]: {
+      display: "block",
+    },
+  }))
+
+  const DrawerContent = styled(Box)(({ theme }) => ({
+    width: "280px",
+    height: "100%",
+    backgroundColor: "#171616",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  }))
+
+  const DrawerHeader = styled(Box)({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "30px",
+  })
+
+  const DrawerLink = styled(Box)<{ isActive: boolean }>(({ theme, isActive }) => ({
+    color: "white",
+    textDecoration: "none",
+    padding: "16px 20px",
+    borderRadius: "8px",
+    fontSize: "1.1rem",
+    fontWeight: isActive ? "bold" : "500",
+    transition: "all 0.3s ease",
+    backgroundColor: isActive ? theme.palette.secondary.main : "transparent",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+      transform: "translateX(5px)",
     },
   }))
 
   const menuItems = [
-    { id: "hero", label: "Início" },
-    { id: "about", label: "Sobre" },
-    { id: "education", label: "Formação" },
-    { id: "experience", label: "Experiência" },
-    { id: "projects", label: "Projetos" },
-    { id: "blog", label: "Blog", path: "/blog" },
+    { id: "hero", label: "Início", icon: <HomeIcon /> },
+    { id: "about", label: "Sobre", icon: <PersonIcon /> },
+    { id: "education", label: "Formação", icon: <SchoolIcon /> },
+    { id: "experience", label: "Experiência", icon: <WorkIcon /> },
+    { id: "projects", label: "Projetos", icon: <CodeIcon /> },
+    { id: "blog", label: "Blog", path: "/blog", icon: <ArticleIcon /> },
   ];
 
   const isActive = (item: typeof menuItems[0]) => {
@@ -128,17 +190,56 @@ const NavBar = () => {
   };
 
   return (
-    <StyleToolbar>
-      {menuItems.map((item) => (
-        <StyledLink
-          key={item.id}
-          onClick={() => handleNavigation(item)}
-          isActive={isActive(item)}
-        >
-          {item.label}
-        </StyledLink>
-      ))}
-    </StyleToolbar>
+    <>
+      <StyleToolbar>
+        <Logo>GF</Logo>
+        {menuItems.map((item) => (
+          <StyledLink
+            key={item.id}
+            onClick={() => handleNavigation(item)}
+            isActive={isActive(item)}
+          >
+            {item.label}
+          </StyledLink>
+        ))}
+        <MobileMenuButton onClick={() => setMobileMenuOpen(true)}>
+          <MenuIcon sx={{ fontSize: "2rem" }} />
+        </MobileMenuButton>
+      </StyleToolbar>
+
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: "transparent",
+          }
+        }}
+      >
+        <DrawerContent>
+          <DrawerHeader>
+            <Logo>Gabriel Ferreira</Logo>
+            <IconButton 
+              onClick={() => setMobileMenuOpen(false)}
+              sx={{ color: "white" }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DrawerHeader>
+          {menuItems.map((item) => (
+            <DrawerLink
+              key={item.id}
+              onClick={() => handleNavigation(item)}
+              isActive={isActive(item)}
+            >
+              {item.icon}
+              {item.label}
+            </DrawerLink>
+          ))}
+        </DrawerContent>
+      </Drawer>
+    </>
   )
 }
 
