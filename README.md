@@ -53,6 +53,7 @@ Para mais detalhes sobre o projeto, consulte o [README do portfólio](./portifol
 **Gabriel Ferreira**
 - GitHub: [@GabrielF13](https://github.com/GabrielF13)
 - LinkedIn: [gabriel-ferreira-cunha](https://www.linkedin.com/in/gabriel-ferreira-cunha/)
+- Portfolio:[ [Link]](https://gabrielferreiradev.com.br/)
 - Email: gabrielferreiracunha@gmail.com
 
 ## 📄 Licença
